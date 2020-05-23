@@ -1,0 +1,14 @@
+{
+    "name": "hyperzlib/isekai-ai-review",
+	"type": "mediawiki-extension",
+    "require": {
+        "alibabacloud/sdk": "^1.8",
+        "paquettg/php-html-parser": "^2.2"
+    },
+    "authors": [
+        {
+            "name": "量子复合态",
+            "email": "hyperzlib@outlook.com"
+        }
+    ]
+}

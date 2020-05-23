@@ -1,0 +1,57 @@
+{
+  "name": "IsekaiAIReview",
+  "author": "hyperzlib",
+  "url": "https://www.isekai.cn",
+  "descriptionmsg": "isekai-aireview-desc",
+  "version": "1.0.0",
+  "license-name": "MIT",
+  "type": "other",
+  "requires": {
+    "MediaWiki": ">= 1.31.0",
+    "extensions": {
+			"Moderation": ">= 1.5.0"
+		}
+  },
+  "ExtensionMessagesFiles": {
+    "IsekaiAIReviewAlias": "IsekaiAIReview.alias.php"
+  },
+  "MessagesDirs": {
+    "IsekaiAIReview": [
+      "i18n"
+    ]
+  },
+  "AutoloadClasses": {
+    "Isekai\\AIReview\\Hooks": "includes/Hooks.php",
+    "Isekai\\AIReview\\SectionSplitter": "includes/SectionSplitter.php",
+    "Isekai\\AIReview\\Utils": "includes/Utils.php",
+    "Isekai\\AIReview\\AliyunAIReview": "includes/AliyunAIReview.php",
+    "Isekai\\AIReview\\AIReviewJob": "includes/AIReviewJob.php",
+    "Isekai\\AIReview\\LogFormatter": "includes/LogFormatter.php"
+  },
+  "Hooks": {
+    "ModerationPending": [
+      "Isekai\\AIReview\\Hooks::onModerationPending"
+    ]
+  },
+  "JobClasses": {
+    "IsekaiAIReview": "Isekai\\AIReview\\AIReviewJob"
+  },
+  "LogTypes": [
+    "aireview"
+  ],
+  "LogActionsHandlers": {
+    "aireview/*": "Isekai\\AIReview\\LogFormatter"
+  },
+  "LogRestrictions": {
+		"aireview": "moderation"
+	},
+  "config": {
+    "AIReviewEndpoint": "cn-shanghai",
+    "AIReviewAccessKeyId": "",
+    "AIReviewAccessKeySecret": "",
+    "AIReviewBizType": null,
+    "AIReviewRobotUID": 1
+  },
+  "load_composer_autoloader": true,
+  "manifest_version": 1
+}

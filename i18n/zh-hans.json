@@ -1,0 +1,21 @@
+{
+    "isekai-aireview-desc": "通过AI实现自动审核",
+    "log-name-aireview": "机器审核记录",
+    "log-description-aireview": "这里会显示经过机器审核的记录",
+    "logentry-aireview-approve": "AI已{{GENDER:$2|通过}}$4对页面$3的$5",
+    "logentry-aireview-reject": "AI已{{GENDER:$2|阻止}}$4对页面$3的$5，原因：$6",
+
+    "isekai-aireview-aliyun-reason-normal": "正常（不知道为什么会被拦截）",
+    "isekai-aireview-aliyun-reason-spam": "垃圾信息",
+    "isekai-aireview-aliyun-reason-ad": "广告",
+    "isekai-aireview-aliyun-reason-politics": "政治敏感",
+    "isekai-aireview-aliyun-reason-terrorism": "暴恐",
+    "isekai-aireview-aliyun-reason-abuse": "辱骂",
+    "isekai-aireview-aliyun-reason-porn": "色情",
+    "isekai-aireview-aliyun-reason-flood": "灌水",
+    "isekai-aireview-aliyun-reason-contraband": "违禁",
+    "isekai-aireview-aliyun-reason-meaningless": "无意义",
+    "isekai-aireview-aliyun-reason-customized": "违禁词",
+    "isekai-aireview-aliyun-reason-unknow": "未知: $1",
+    "isekai-aireview-aliyun-server-error": "服务器返回: $1"
+}
