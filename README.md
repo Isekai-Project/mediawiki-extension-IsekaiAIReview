@@ -11,7 +11,7 @@ First, register at Aliyun: [https://www.aliyun.com/product/lvwang](https://www.a
 
 And then, install the Moderation extension: [https://github.com/edwardspec/mediawiki-moderation](https://github.com/edwardspec/mediawiki-moderation)
 
-Install composer packages (If you download the release, ignore it)
+Install composer packages: (If you download the release, ignore it)
 ```php
 composer update
 ```

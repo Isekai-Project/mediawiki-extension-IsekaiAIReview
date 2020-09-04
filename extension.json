@@ -1,7 +1,7 @@
 {
   "name": "IsekaiAIReview",
   "author": "hyperzlib",
-  "url": "https://github.com/Isekai-Project/mediawiki-IsekaiAIReview",
+  "url": "https://github.com/Isekai-Project/mediawiki-extension-IsekaiAIReview",
   "descriptionmsg": "isekai-aireview-desc",
   "version": "1.0.0",
   "license-name": "MIT",
