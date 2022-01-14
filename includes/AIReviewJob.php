@@ -24,15 +24,15 @@ class AIReviewJob extends Job {
 
         $robotUser = User::newFromId($wgAIReviewRobotUID);
 
-        $modid = $this->params['mod_id'];
-        $modUser = $dbr->selectField('moderation', 'mod_user', ['mod_id' => $modid], __METHOD__);
+        $mod_id = $this->params['mod_id'];
+        $modUser = $dbr->selectField('moderation', 'mod_user', ['mod_id' => $mod_id], __METHOD__);
 
         $services = MediaWikiServices::getInstance();
         $entryFactory = $services->getService('Moderation.EntryFactory');
         $consequenceManager = $services->getService('Moderation.ConsequenceManager');
 
         /** @var ModerationViewableEntry $contentEntry  */
-        $contentEntry = $entryFactory->findViewableEntry($modid);
+        $contentEntry = $entryFactory->findViewableEntry($mod_id);
         $title = $contentEntry->getTitle();
 
         $context = RequestContext::getMain();
@@ -50,7 +50,9 @@ class AIReviewJob extends Job {
                     'isekai-aireview',
                     'Reject revision on: ' . $title->getText() . ', reason: ' . Utils::getReadableReason($result['reason'])
                 );
-                Utils::addAIReviewLog('reject', $robotUser, $modUser, $title, $modid, $result['reason']);
+                Utils::addAIReviewLog('reject', $robotUser, $modUser, $title, $mod_id, $result['reason']);
+                $services->getHookContainer()->run("IsekaiAIReviewResult",
+                    [ false, $title, $mod_id, $modUser, $result['reason'] ]);
                 return true;
             }
         }
@@ -60,9 +62,11 @@ class AIReviewJob extends Job {
             'isekai-aireview',
             'Approve revision on: ' . $title->getText()
         );
-        Utils::addAIReviewLog('approve', $robotUser, $modUser, $title, $modid);
-        $approveEntry = $entryFactory->findApprovableEntry($modid);
+        $approveEntry = $entryFactory->findApprovableEntry($mod_id);
         $approveEntry->approve($robotUser);
+        Utils::addAIReviewLog('approve', $robotUser, $modUser, $title, $mod_id);
+        $services->getHookContainer()->run("IsekaiAIReviewResult",
+            [ true, $title, $mod_id, $modUser, '' ]);
         return true;
     }
 }

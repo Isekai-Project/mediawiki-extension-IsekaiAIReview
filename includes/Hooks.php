@@ -5,9 +5,10 @@ use JobQueueGroup;
 use Title;
 
 class Hooks {
-    public static function onModerationPending($fields, $modid){
+    public static function onModerationPending($fields, $mod_id){
         //加入审核队列
-        $job = new AIReviewJob(Title::newFromText($fields['mod_title']), ['mod_id' => $modid]);
+        $title = Title::newFromText($fields['mod_title']);
+        $job = new AIReviewJob($title, ['mod_id' => $mod_id]);
         JobQueueGroup::singleton()->push($job);
     }
 }
