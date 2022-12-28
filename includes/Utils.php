@@ -5,7 +5,14 @@ use ManualLogEntry;
 use PHPHtmlParser\Dom;
 
 class Utils {
-    public static function getDiffAddedLines($diffHtml){
+    /**
+     * @throws \PHPHtmlParser\Exceptions\CurlException
+     * @throws \PHPHtmlParser\Exceptions\ChildNotFoundException
+     * @throws \PHPHtmlParser\Exceptions\NotLoadedException
+     * @throws \PHPHtmlParser\Exceptions\CircularException
+     * @throws \PHPHtmlParser\Exceptions\StrictException
+     */
+    public static function getDiffAddedLines($diffHtml) {
         $dom = new Dom();
         $dom->load($diffHtml);
         $lines = [];
@@ -37,6 +44,9 @@ class Utils {
         return implode(', ', $readableReasons);
     }
 
+    /**
+     * @throws \MWException
+     */
     public static function addAIReviewLog($event, $robotUser, $modUser, $title, $modid, $reason = null){
         $entry = new ManualLogEntry('aireview', $event);
         $entry->setPerformer($robotUser);

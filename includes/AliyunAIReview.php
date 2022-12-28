@@ -48,9 +48,13 @@ class AliyunAIReview {
         return $taskList;
     }
 
+    /**
+     * @throws \AlibabaCloud\Client\Exception\ServerException
+     * @throws \AlibabaCloud\Client\Exception\ClientException
+     */
     public function doRequest($requestData){
         $textScan = Green::v20180509()->textScan();
-        $response = $textScan->setMethod('POST')->setAcceptFormat('JSON')->setContent(json_encode($requestData))->request();
+        $response = $textScan->method('POST')->accept('JSON')->body(json_encode($requestData))->request();
 
         if($response->getReasonPhrase() === 'OK'){
             return $this->parseResponse($response->toArray());

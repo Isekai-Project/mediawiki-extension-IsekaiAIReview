@@ -1,13 +1,14 @@
 {
   "name": "IsekaiAIReview",
-  "author": "hyperzlib",
+  "namemsg": "isekai-aireview-name",
+  "author": "Hyperzlib",
   "url": "https://github.com/Isekai-Project/mediawiki-extension-IsekaiAIReview",
   "descriptionmsg": "isekai-aireview-desc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license-name": "MIT",
   "type": "other",
   "requires": {
-    "MediaWiki": ">= 1.31.0",
+    "MediaWiki": ">= 1.35.0",
     "extensions": {
 			"Moderation": ">= 1.5.0"
 		}
@@ -52,6 +53,5 @@
     "AIReviewBizType": null,
     "AIReviewRobotUID": 1
   },
-  "load_composer_autoloader": true,
   "manifest_version": 1
 }

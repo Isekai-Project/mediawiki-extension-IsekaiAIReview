@@ -2,6 +2,7 @@
 namespace Isekai\AIReview;
 
 use LogFormatter as GlobalLogFormatter;
+use MediaWiki\MediaWikiServices;
 use SpecialPage;
 use Message;
 use Linker;
@@ -9,44 +10,43 @@ use Title;
 use User;
 
 class LogFormatter extends GlobalLogFormatter {
+    /**
+     * @param array $params
+     * @return array
+     * @throws \MWException
+     */
+    public function buildBaseParams(array $params): array {
+        $services = MediaWikiServices::getInstance();
+        $linkRenderer = $this->getLinkRenderer();
+        $entryParams = $this->entry->getParameters();
+        $modId = $entryParams['modid'];
+
+        $user = $services->getUserFactory()->newFromId($entryParams['moduser']);
+        $userLink = Linker::userLink($user->getId(), $user->getName());
+        $params[3] = Message::rawParam($userLink);
+
+        $link = $linkRenderer->makeKnownLink(
+            SpecialPage::getTitleFor('Moderation'),
+            $this->msg('moderation-log-change')->params($modId)->text(),
+            ['title' => $this->msg('tooltip-moderation-rejected-change')->plain()],
+            ['modaction' => 'show', 'modid' => $modId]
+        );
+        $params[4] = Message::rawParam($link);
+        return $params;
+    }
+
     public function getMessageParameters(){
         $params = parent::getMessageParameters();
-
-        $type = $this->entry->getSubtype();
         $entryParams = $this->entry->getParameters();
-        $linkRenderer = $this->getLinkRenderer();
+        $type = $this->entry->getSubtype();
         
         switch($type){
             case 'approve':
-                $modId = $entryParams['modid'];
-
-                $user = User::newFromId($entryParams['moduser']);
-                $userLink = Linker::userLink( $user->getId(), $user->getName() );
-                $params[3] = Message::rawParam( $userLink );
-
-                $link = $linkRenderer->makeKnownLink(
-                    SpecialPage::getTitleFor( 'Moderation' ),
-                    $this->msg( 'moderation-log-change' )->params( $modId )->text(),
-                    [ 'title' => $this->msg( 'tooltip-moderation-rejected-change' )->plain() ],
-                    [ 'modaction' => 'show', 'modid' => $modId ]
-                );
-                $params[4] = Message::rawParam( $link );
+                $params = $this->buildBaseParams($params);
 
                 break;
             case 'reject':
-                $modId = $entryParams['modid'];
-
-                $user = User::newFromId($entryParams['moduser']);
-                $userLink = Linker::userLink( $user->getId(), $user->getName() );
-                $params[3] = Message::rawParam( $userLink );
-
-                $link = $linkRenderer->makeKnownLink(
-                    SpecialPage::getTitleFor( 'Moderation' ),
-                    $this->msg( 'moderation-log-change' )->params( $modId )->text(),
-                    [ 'title' => $this->msg( 'tooltip-moderation-rejected-change' )->plain() ],
-                    [ 'modaction' => 'show', 'modid' => $modId ]
-                );
-                $params[4] = Message::rawParam( $link );
+                $params = $this->buildBaseParams($params);
 
                 $params[5] = Utils::getReadableReason($entryParams['reason']);
                 break;
@@ -55,13 +55,14 @@ class LogFormatter extends GlobalLogFormatter {
     }
 
     public function getPreloadTitles() {
+        $services = MediaWikiServices::getInstance();
 		$type = $this->entry->getSubtype();
 		$params = $this->entry->getParameters();
 
 		$titles = [];
 
         if ( $params['moduser'] ) { # Not anonymous
-            $user = User::newFromId($params['moduser']);
+            $user = $services->getUserFactory()->newFromId($params['moduser']);
             $titles[] = Title::makeTitle( NS_USER, $user->getName() );
         }
 
