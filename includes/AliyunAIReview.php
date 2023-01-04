@@ -11,13 +11,14 @@ class AliyunAIReview {
     public function __construct(){
         global $wgAIReviewEndpoint, $wgAIReviewAccessKeyId, $wgAIReviewAccessKeySecret;
         AlibabaCloud::accessKeyClient($wgAIReviewAccessKeyId, $wgAIReviewAccessKeySecret)
+            ->connectTimeout(3)
             ->regionId($wgAIReviewEndpoint)
             ->asDefaultClient();
     }
 
-    public function reviewText($text){
+    public function reviewText($text, $rawResponse = false) {
         $reqData = $this->buildRequestData($text);
-        $response = $this->doRequest($reqData);
+        $response = $this->doRequest($reqData, $rawResponse);
         return $response;
     }
 
@@ -52,14 +53,18 @@ class AliyunAIReview {
      * @throws \AlibabaCloud\Client\Exception\ServerException
      * @throws \AlibabaCloud\Client\Exception\ClientException
      */
-    public function doRequest($requestData){
+    public function doRequest($requestData, $rawResponse = false) {
         $textScan = Green::v20180509()->textScan();
-        $response = $textScan->method('POST')->accept('JSON')->body(json_encode($requestData))->request();
+        $response = $textScan->body(json_encode($requestData))->request();
 
-        if($response->getReasonPhrase() === 'OK'){
-            return $this->parseResponse($response->toArray());
+        if ($rawResponse) {
+            return $response;
         } else {
-            return ['pass' => false, 'reason' => wfMessage('isekai-aireview-aliyun-server-error', $response->getStatusCode())->escaped()];
+            if ($response->getReasonPhrase() === 'OK') {
+                return $this->parseResponse($response->toArray());
+            } else {
+                return ['pass' => false, 'reason' => wfMessage('isekai-aireview-aliyun-server-error', $response->getStatusCode())->escaped()];
+            }
         }
     }
 

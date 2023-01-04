@@ -6,7 +6,7 @@
     "logentry-aireview-approve": "AI已{{GENDER:$2|通过}}$4对页面$3的$5",
     "logentry-aireview-reject": "AI已{{GENDER:$2|阻止}}$4对页面$3的$5，原因：$6",
 
-    "isekai-aireview-aliyun-reason-normal": "正常（不知道为什么会被拦截）",
+    "isekai-aireview-aliyun-reason-normal": "正常（不应该被拦截）",
     "isekai-aireview-aliyun-reason-spam": "垃圾信息",
     "isekai-aireview-aliyun-reason-ad": "广告",
     "isekai-aireview-aliyun-reason-politics": "政治敏感",
