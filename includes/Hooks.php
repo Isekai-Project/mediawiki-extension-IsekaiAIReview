@@ -1,9 +1,8 @@
 <?php
 namespace Isekai\AIReview;
 
-use JobQueueGroup;
 use MediaWiki\MediaWikiServices;
-use Title;
+use MediaWiki\Title\Title;
 
 class Hooks {
     public static function onModerationPending($fields, $mod_id){

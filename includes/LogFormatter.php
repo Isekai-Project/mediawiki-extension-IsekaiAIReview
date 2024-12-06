@@ -3,11 +3,10 @@ namespace Isekai\AIReview;
 
 use LogFormatter as GlobalLogFormatter;
 use MediaWiki\MediaWikiServices;
-use SpecialPage;
-use Message;
-use Linker;
-use Title;
-use User;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Message\Message;
+use MediaWiki\Linker\Linker;
+use MediaWiki\Title\Title;
 
 class LogFormatter extends GlobalLogFormatter {
     /**

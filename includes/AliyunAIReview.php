@@ -3,7 +3,6 @@ namespace Isekai\AIReview;
 
 use AlibabaCloud\Client\AlibabaCloud;
 use AlibabaCloud\Green\Green;
-use Exception;
 
 class AliyunAIReview {
     private const MAX_LENGTH = 10000;

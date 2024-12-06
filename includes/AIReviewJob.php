@@ -3,9 +3,8 @@ namespace Isekai\AIReview;
 
 use Job;
 use MediaWiki\MediaWikiServices;
-use Title;
-use User;
-use RequestContext;
+use MediaWiki\Title\Title;
+use MediaWiki\Context\RequestContext;
 use ModerationViewableEntry;
 
 class AIReviewJob extends Job {
