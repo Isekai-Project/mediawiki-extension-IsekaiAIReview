@@ -21,13 +21,8 @@
       "i18n"
     ]
   },
-  "AutoloadClasses": {
-    "Isekai\\AIReview\\Hooks": "includes/Hooks.php",
-    "Isekai\\AIReview\\SectionSplitter": "includes/SectionSplitter.php",
-    "Isekai\\AIReview\\Utils": "includes/Utils.php",
-    "Isekai\\AIReview\\AliyunAIReview": "includes/AliyunAIReview.php",
-    "Isekai\\AIReview\\AIReviewJob": "includes/AIReviewJob.php",
-    "Isekai\\AIReview\\LogFormatter": "includes/LogFormatter.php"
+  "AutoloadNamespaces": {
+    "Isekai\\AIReview\\": "includes/"
   },
   "Hooks": {
     "ModerationPending": [
@@ -47,11 +42,21 @@
 		"aireview": "moderation"
 	},
   "config": {
-    "AIReviewEndpoint": "cn-shanghai",
-    "AIReviewAccessKeyId": "",
-    "AIReviewAccessKeySecret": "",
-    "AIReviewBizType": null,
-    "AIReviewRobotUID": 1
+    "AIReviewEndpoint": {
+      "value": "cn-shanghai"
+    },
+    "AIReviewAccessKeyId": {
+      "value": ""
+    },
+    "AIReviewAccessKeySecret": {
+      "value": ""
+    },
+    "AIReviewBizType": {
+      "value": null
+    },
+    "AIReviewRobotUID": {
+      "value": 1
+    }
   },
-  "manifest_version": 1
+  "manifest_version": 2
 }

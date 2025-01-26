@@ -16,9 +16,9 @@ class AIReviewJob extends Job {
      * 运行job，开始进行AI审核
      */
     public function run(){
-        global $wgAIReviewRobotUID;
-
         $services = MediaWikiServices::getInstance();
+        $config = $services->getMainConfig();
+        $wgAIReviewRobotUID = $config->get('AIReviewRobotUID');
 
         $dbr = $services->getDBLoadBalancer()->getMaintenanceConnectionRef(DB_REPLICA);
 
@@ -61,9 +61,9 @@ class AIReviewJob extends Job {
             'isekai-aireview',
             'Approve revision on: ' . $title->getText()
         );
+        Utils::addAIReviewLog('approve', $robotUser, $modUser, $title, $mod_id);
         $approveEntry = $entryFactory->findApprovableEntry($mod_id);
         $approveEntry->approve($robotUser);
-        Utils::addAIReviewLog('approve', $robotUser, $modUser, $title, $mod_id);
         $services->getHookContainer()->run("IsekaiAIReviewResult",
             [ true, $title, $mod_id, $modUser, '' ]);
         return true;
