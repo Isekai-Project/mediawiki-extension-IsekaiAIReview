@@ -15,7 +15,7 @@ class AIReviewJob extends Job {
     /**
      * 运行job，开始进行AI审核
      */
-    public function run(){
+    public function run() {
         $services = MediaWikiServices::getInstance();
         $config = $services->getMainConfig();
         $wgAIReviewRobotUID = $config->get('AIReviewRobotUID');

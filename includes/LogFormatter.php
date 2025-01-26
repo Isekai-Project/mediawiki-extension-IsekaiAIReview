@@ -34,7 +34,7 @@ class LogFormatter extends GlobalLogFormatter {
         return $params;
     }
 
-    public function getMessageParameters(){
+    public function getMessageParameters() {
         $params = parent::getMessageParameters();
         $entryParams = $this->entry->getParameters();
         $type = $this->entry->getSubtype();

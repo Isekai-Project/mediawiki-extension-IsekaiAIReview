@@ -7,7 +7,7 @@ class SectionSplitter {
     private $bufferLength = 0;
     private $maxLength;
 
-    public function __construct($text, $maxLength = 10000){
+    public function __construct($text, $maxLength = 10000) {
         $this->maxLength = $maxLength;
         $this->splitLine($text);
     }
@@ -28,7 +28,7 @@ class SectionSplitter {
     /**
      * 按照行来拆分
      */
-    public function splitLine($text){
+    public function splitLine($text) {
         $text = str_replace("\r\n", "\n", $text);
         $lines = explode("\n", $text);
         foreach($lines as $line){
@@ -46,7 +46,7 @@ class SectionSplitter {
     /**
      * 按照句子来拆分
      */
-    public function splitSentence($text){ //我就不信一句话能一万字
+    public function splitSentence($text) { //我就不信一句话能一万字
         $sentences = explode("\0", preg_replace('/(。|\\.)/', "$1\0", $text));
         foreach($sentences as $sentence){
             if(mb_strlen($sentence, 'UTF-8') > $this->maxLength){ //一句话能说一万字吗？
@@ -60,7 +60,7 @@ class SectionSplitter {
     /**
      * 强制拆分
      */
-    public function forceSplit($text){
+    public function forceSplit($text) {
         $len = mb_strlen($text, 'UTF-8');
         $times = ceil($len / $this->maxLength);
         for($i = 0; $i < $times; $i ++){
@@ -72,7 +72,7 @@ class SectionSplitter {
         }
     }
 
-    public function getChunkList(){
+    public function getChunkList() {
         return $this->chunkList;
     }
 }

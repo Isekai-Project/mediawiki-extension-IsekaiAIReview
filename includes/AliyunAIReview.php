@@ -7,7 +7,7 @@ use AlibabaCloud\Green\Green;
 class AliyunAIReview {
     private const MAX_LENGTH = 10000;
 
-    public function __construct(){
+    public function __construct() {
         global $wgAIReviewEndpoint, $wgAIReviewAccessKeyId, $wgAIReviewAccessKeySecret;
         AlibabaCloud::accessKeyClient($wgAIReviewAccessKeyId, $wgAIReviewAccessKeySecret)
             ->connectTimeout(3)
@@ -21,7 +21,7 @@ class AliyunAIReview {
         return $response;
     }
 
-    public function buildRequestData($text){
+    public function buildRequestData($text) {
         global $wgAIReviewBizType;
 
         $reqData = [
@@ -33,7 +33,7 @@ class AliyunAIReview {
         return $reqData;
     }
 
-    public function buildTasks($text){
+    public function buildTasks($text) {
         $splitter = new SectionSplitter($text, self::MAX_LENGTH);
         $chunkList = $splitter->getChunkList();
         $taskList = [];
@@ -67,7 +67,7 @@ class AliyunAIReview {
         }
     }
 
-    public function parseResponse($response){
+    public function parseResponse($response) {
         if($response['code'] !== 200)
             return ['pass' => false, 'reason' => wfMessage('isekai-aireview-aliyun-server-error', $response['code'])->escaped()];
         

@@ -27,7 +27,7 @@ class Utils {
         return trim(implode("\n", $lines));
     }
 
-    public static function getReadableReason($reasons){
+    public static function getReadableReason($reasons) {
         $allowedReasons = ['spam', 'ad', 'politics', 'terrorism', 'abuse', 'porn', 'flood', 'contraband', 'meaningless', 'customized', 'normal'];
 
         if(is_string($reasons)) return $reasons;
@@ -47,7 +47,7 @@ class Utils {
     /**
      * @throws \MWException
      */
-    public static function addAIReviewLog($event, $robotUser, $modUser, $title, $modid, $reason = null){
+    public static function addAIReviewLog($event, $robotUser, $modUser, $title, $modid, $reason = null) {
         $entry = new ManualLogEntry('aireview', $event);
         $entry->setPerformer($robotUser);
         $entry->setTarget($title);
