@@ -8,6 +8,7 @@ class SectionSplitter {
     private $maxLength;
 
     public function __construct($text, $maxLength = 10000) {
+        if ($maxLength < 1) { throw new \InvalidArgumentException('Chunk length must be positive'); }
         $this->maxLength = $maxLength;
         $this->splitLine($text);
     }
@@ -32,7 +33,7 @@ class SectionSplitter {
         $text = str_replace("\r\n", "\n", $text);
         $lines = explode("\n", $text);
         foreach($lines as $line){
-            if(empty($line)) continue;
+            if($line === '') continue;
 
             $line .= "\n";
             if(mb_strlen($line, 'UTF-8') > $this->maxLength){ //见鬼，这个人怎么能写一万字不换行
@@ -62,12 +63,8 @@ class SectionSplitter {
      */
     public function forceSplit($text) {
         $len = mb_strlen($text, 'UTF-8');
-        $times = ceil($len / $this->maxLength);
-        for($i = 0; $i < $times; $i ++){
-            $startPos = $i * $this->maxLength;
-            $sentenceLen = min($len - 1 - $i * $startPos, $this->maxLength);
-            $sentence = substr($text, $startPos, $sentenceLen);
-            
+        for($startPos = 0; $startPos < $len; $startPos += $this->maxLength){
+            $sentence = mb_substr($text, $startPos, $this->maxLength, 'UTF-8');
             $this->push($sentence);
         }
     }

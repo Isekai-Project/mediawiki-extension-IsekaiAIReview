@@ -2,14 +2,18 @@
 namespace Isekai\AIReview;
 
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Title\Title;
 
 class Hooks {
+    public static function onBeforePageDisplay($out, $skin) {
+        \DeferredUpdates::addCallableUpdate(static function () { (new ReviewScheduler())->dispatchRecovery(); });
+    }
+
     public static function onModerationPending($fields, $mod_id) {
-        //加入审核队列
-        $title = Title::newFromText($fields['mod_title']);
-        $job = new AIReviewJob($title, ['mod_id' => $mod_id]);
-        $jobQueue = MediaWikiServices::getInstance()->getJobQueueGroup();
-        $jobQueue->push($job);
+        if (\MediaWiki\Moderation\RevisionChain::isTextEdit($fields)) {
+            (new ReviewScheduler())->schedule((int)$mod_id);
+            return;
+        }
+        $title = \Title::makeTitle($fields['mod_namespace'], $fields['mod_title']);
+        MediaWikiServices::getInstance()->getJobQueueGroup()->push(new AIReviewJob($title, ['mod_id' => $mod_id]));
     }
 }

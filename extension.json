@@ -10,8 +10,8 @@
   "requires": {
     "MediaWiki": ">= 1.38.0",
     "extensions": {
-			"Moderation": ">= 1.5.0"
-		}
+      "Moderation": ">= 1.5.0"
+    }
   },
   "ExtensionMessagesFiles": {
     "IsekaiAIReviewAlias": "IsekaiAIReview.alias.php"
@@ -27,10 +27,14 @@
   "Hooks": {
     "ModerationPending": [
       "Isekai\\AIReview\\Hooks::onModerationPending"
+    ],
+    "BeforePageDisplay": [
+      "Isekai\\AIReview\\Hooks::onBeforePageDisplay"
     ]
   },
   "JobClasses": {
-    "IsekaiAIReview": "Isekai\\AIReview\\AIReviewJob"
+    "IsekaiAIReview": "Isekai\\AIReview\\AIReviewJob",
+    "IsekaiAIReviewRecovery": "Isekai\\AIReview\\ReviewRecoveryJob"
   },
   "LogTypes": [
     "aireview"
@@ -39,8 +43,8 @@
     "aireview/*": "Isekai\\AIReview\\LogFormatter"
   },
   "LogRestrictions": {
-		"aireview": "moderation"
-	},
+    "aireview": "moderation"
+  },
   "config": {
     "AIReviewEndpoint": {
       "value": "cn-shanghai"

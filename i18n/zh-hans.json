@@ -5,7 +5,6 @@
     "log-description-aireview": "这里会显示经过机器审核的记录",
     "logentry-aireview-approve": "AI已{{GENDER:$2|通过}}$4对页面$3的$5",
     "logentry-aireview-reject": "AI已{{GENDER:$2|阻止}}$4对页面$3的$5，原因：$6",
-
     "isekai-aireview-aliyun-reason-normal": "正常（不应该被拦截）",
     "isekai-aireview-aliyun-reason-spam": "垃圾信息",
     "isekai-aireview-aliyun-reason-ad": "广告",
@@ -18,5 +17,7 @@
     "isekai-aireview-aliyun-reason-meaningless": "无意义",
     "isekai-aireview-aliyun-reason-customized": "违禁词",
     "isekai-aireview-aliyun-reason-unknow": "未知: $1",
-    "isekai-aireview-aliyun-server-error": "服务器返回: $1"
+    "isekai-aireview-aliyun-server-error": "服务器返回: $1",
+    "logentry-aireview-approve-judgment": "AI判断$4对页面$3的$5符合审核要求（尚未表示已发布）",
+    "logentry-aireview-reject-judgment": "AI判断$4对页面$3的$5不符合审核要求（保留待审），原因：$6"
 }

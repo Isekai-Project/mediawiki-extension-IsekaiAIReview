@@ -2,29 +2,29 @@
 namespace Isekai\AIReview;
 
 use ManualLogEntry;
-use PHPHtmlParser\Dom;
 
 class Utils {
     /**
-     * @throws \PHPHtmlParser\Exceptions\CurlException
-     * @throws \PHPHtmlParser\Exceptions\ChildNotFoundException
-     * @throws \PHPHtmlParser\Exceptions\NotLoadedException
-     * @throws \PHPHtmlParser\Exceptions\CircularException
-     * @throws \PHPHtmlParser\Exceptions\StrictException
+     * Extract accumulated added text from MediaWiki's diff HTML.
      */
     public static function getDiffAddedLines($diffHtml) {
-        $dom = new Dom();
-        $dom->load($diffHtml);
-        $lines = [];
-
-        if($addedLineDomList = $dom->find('.diff-addedline')){
-            /** @var \PHPHtmlParser\Dom\HtmlNode $addedLineDom */
-            foreach($addedLineDomList as $addedLineDom){
-                $lines[] = strip_tags($addedLineDom->innerHtml);
+        if ($diffHtml === '') { return ''; }
+        $document = new \DOMDocument();
+        $previous = libxml_use_internal_errors(true);
+        try {
+            if (!$document->loadHTML('<meta charset="UTF-8">' . $diffHtml, LIBXML_NONET)) {
+                throw new \RuntimeException('Cannot parse moderation diff');
             }
+            $xpath = new \DOMXPath($document);
+            $lines = [];
+            foreach ($xpath->query('//*[contains(concat(" ", normalize-space(@class), " "), " diff-addedline ")]') as $node) {
+                $lines[] = $node->textContent;
+            }
+            return trim(implode("\n", $lines));
+        } finally {
+            libxml_clear_errors();
+            libxml_use_internal_errors($previous);
         }
-
-        return trim(implode("\n", $lines));
     }
 
     public static function getReadableReason($reasons) {
@@ -47,7 +47,7 @@ class Utils {
     /**
      * @throws \MWException
      */
-    public static function addAIReviewLog($event, $robotUser, $modUser, $title, $modid, $reason = null) {
+    public static function addAIReviewLog($event, $robotUser, $modUser, $title, $modid, $reason = null, $tempRevisionId = null, $stage = 'publication') {
         $entry = new ManualLogEntry('aireview', $event);
         $entry->setPerformer($robotUser);
         $entry->setTarget($title);
@@ -55,6 +55,8 @@ class Utils {
         $param = [
             'modid' => $modid,
             'moduser' => $modUser,
+            'temp_revision_id' => $tempRevisionId,
+            'stage' => $stage,
         ];
         if($reason){
             $param['reason'] = $reason;

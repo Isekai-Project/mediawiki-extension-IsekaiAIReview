@@ -9,6 +9,10 @@ use MediaWiki\Linker\Linker;
 use MediaWiki\Title\Title;
 
 class LogFormatter extends GlobalLogFormatter {
+    protected function getMessageKey() {
+        $params = $this->entry->getParameters();
+        return parent::getMessageKey() . (($params['stage'] ?? '') === 'judgment' ? '-judgment' : '');
+    }
     /**
      * @param array $params
      * @return array
@@ -24,9 +28,12 @@ class LogFormatter extends GlobalLogFormatter {
         $userLink = Linker::userLink($user->getId(), $user->getName());
         $params[3] = Message::rawParam($userLink);
 
+        $target = SpecialPage::getTitleFor('Moderation');
+        $tempId = $entryParams['temp_revision_id'] ?? 0;
+        if ($tempId) { $target->setFragment('temp-revision-' . $tempId); }
         $link = $linkRenderer->makeKnownLink(
-            SpecialPage::getTitleFor('Moderation'),
-            $this->msg('moderation-log-change')->params($modId)->text(),
+            $target,
+            $this->msg('moderation-log-change')->params($modId)->text() . ($tempId ? ' (temp_revision_id=' . $tempId . ')' : ''),
             ['title' => $this->msg('tooltip-moderation-rejected-change')->plain()],
             ['modaction' => 'show', 'modid' => $modId]
         );
@@ -47,7 +54,7 @@ class LogFormatter extends GlobalLogFormatter {
             case 'reject':
                 $params = $this->buildBaseParams($params);
 
-                $params[5] = Utils::getReadableReason($entryParams['reason']);
+                $params[5] = Utils::getReadableReason($entryParams['reason'] ?? []);
                 break;
         }
         return $params;
